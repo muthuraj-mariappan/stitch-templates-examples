@@ -1,0 +1,58 @@
+kind: Rules
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.AddFreemarkerLastLabel"
+    condition:
+      deployedType: k8s.Resources
+      expression: "#ctx.currentDeployedApplication != null && #ctx.currentDeployedApplication.environment.name == 'kubernetes-env'"
+    processor:
+      - type: patch
+        description: "Adding last label to kubernetes spec by using patch processor with jsonpatch merge type"
+        phase: PATCH
+        merge:
+          type: overlay
+        parameters:
+          patch:
+            - op: replace
+              path: "/metadata/labels/overridenLabel"
+              value: "OVERRIDEN-BY-PATCH"
+
+---
+kind: Rules
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.AddFreemarkerLabels"
+    condition:
+      deployedType: k8s.Resources
+    processor:
+      - type: freemarker
+        description: "Adding label to kubernetes spec"
+        parameters:
+          template: |
+            { "metadata" : {
+               "labels": {
+                 "myLabel": "myValue"
+               }
+              }
+            }
+      - type: freemarker
+        description: "Adding first label to kubernetes spec"
+        phase: BASE_DEFINITION
+        merge:
+          type: overlay
+        parameters:
+          template: |
+            { "metadata" : {
+               "labels": {
+                 "overridenLabel": "initialValue"
+               }
+              }
+            }
+      - type: k8s.MacroFreemarkerAddLabels
+        description: "Adding freemarker macro"
+        weight: 10
+        parameters:
+          application: "#{#ctx.getCurrentDeployedApplication().getName()}"
+          environment: "#{#ctx.getCurrentDeployedApplication().getEnvironment().getName()}"

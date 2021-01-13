@@ -1,0 +1,14 @@
+kind: Macros
+metadata:
+  namespace: tf-k8s-freemarker
+spec:
+  - name: "k8s.MacroFreemarkerAddLabels"
+    description: This is a macro for adding labels
+    parameters:
+      application: "#{#ctx.getCurrentDeployedApplication().getName()}"
+      const: default-value
+    processor:
+      - type: freemarker
+        description: "Adding app and env label"
+        parameters:
+          templateFile: macro/label-template.ftl

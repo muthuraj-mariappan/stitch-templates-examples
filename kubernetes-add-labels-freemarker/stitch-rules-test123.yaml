@@ -1,0 +1,21 @@
+kind: Rules
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.AddFreemarkerLabels-02"
+    condition:
+      deployedType: k8s.Resources
+    processor:
+      - type: freemarker
+        description: "Adding first label to kubernetes spec-02-dryrun"
+        phase: BASE_DEFINITION
+        merge:
+          type: overlay
+        parameters:
+          template: |
+            { "metadata" : {
+               "labels": {
+                 "overridenLabel-dryrun-02": "initialValue-dryrun-02"
+               }
+              }
+            }

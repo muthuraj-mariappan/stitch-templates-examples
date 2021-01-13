@@ -1,0 +1,18 @@
+kind: Rules
+metadata:
+  namespace: aws-freemarker
+spec:
+  - name: "k8s.AddFreemarkerLastLabel"
+    condition:
+      deployedType: aws.cloudformation.DeployedTemplate
+    processor:
+      - type: patch
+        description: "Adding last label to kubernetes spec by using patch processor with jsonpatch merge type"
+        phase: PATCH
+        merge:
+          type: overlay
+        parameters:
+          patch:
+            - op: replace
+              path: "/Description"
+              value: "OVERRIDEN-BY-PATCH"

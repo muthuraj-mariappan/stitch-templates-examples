@@ -1,0 +1,21 @@
+kind: Rules
+metadata:
+  namespace: cloud-formation-template
+spec:
+  - name: "CloudFormation"
+    condition:
+      deployedType: aws.cloudformation.DeployedTemplate
+    processor:
+      - type: groovy
+        description: "Prepend stitched description to all description properties"
+        parameters:
+          script: |
+            import com.xebialabs.deployit.plugin.stitch.service.engine.processor.handler.groovy.MapFunction
+            def stitch(spec, params, document, ctx) {
+              document.map('$..Description', new MapFunction() {
+                Object map(currentValue) {
+                  "-------------Prepended STICHED description---------- " + currentValue
+                }
+              })
+              document.getMutatedDocument()
+            }
