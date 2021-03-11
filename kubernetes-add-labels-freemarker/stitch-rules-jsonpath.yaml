@@ -1,0 +1,18 @@
+kind: Rules
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.AddFreemarkerJsonPathLabels"
+    condition:
+      deployedType: k8s.Resources
+    processor:
+      - type: freemarker
+        description: "Adding label to kubernetes spec using jsonpath"
+        merge:
+          type: jsonpath
+          path: "$.metadata.labels"
+        parameters:
+          template: |
+            {
+              "theLabel": "theValue"
+            }

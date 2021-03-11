@@ -1,0 +1,20 @@
+kind: Rules
+metadata:
+  namespace: tf-gke-freemarker
+spec:
+  - name: "gke.ChangeVPCName"
+    condition:
+      deployedType: terraform.ExecutedModule
+      expression: "#input.getJsonNode(\"$.resource.google_compute_network.vpc\") != null"
+    processor:
+      - type: freemarker
+        description: "change namespace name of tf k8s"
+        phase: PATCH
+        merge:
+          type: jsonpath
+          path: "$.resource.google_compute_network.vpc"
+        parameters:
+          template: |
+            {
+              "name": "test_terraform_vpc_after_stitching"
+            }

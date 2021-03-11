@@ -1,0 +1,30 @@
+kind: Macros
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.MacroFreemarkerAddLabels2"
+    description: This is a macro for adding labels2
+    parameters:
+      application: "#{#ctx.getDeployedApplication().getName()}"
+      const: default-value2
+    processor:
+      - type: freemarker
+        description: "Adding app and env label"
+        parameters:
+          templateFile: macro/label-template.ftl
+          
+---          
+kind: Macros
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.MacroFreemarkerAddLabels3"
+    description: This is a macro for adding labels3
+    parameters:
+      application: "#{#ctx.getDeployedApplication().getName()}"
+      const: default-value3
+    processor:
+      - type: freemarker
+        description: "Adding app and env label"
+        parameters:
+          templateFile: macro/label-template.ftl
