@@ -1,1 +1,24 @@
+kind: Rules
+metadata:
+  namespace: xl-bank-13-3
+spec:
+  - name: "xl-bank-labels-13-3"
+    condition:
+      deployedType: yak.StitchFileResource
+    processor:
+      - type: freemarker
+        description: "Error Adding the labels to the resulting YAML file"
+        parameters:
+          template: |
+            { "metadata": {
+                "labels": {
+                  "environment":"${environment}}",
+                  "version":"${version}"
+                }
+              }
+            }
+          variables:
+            version: "#{#ctx.deployedApplication.version.name1}"
+            environment: "#{#ctx.deployedApplication.environment.name}"     
+
 
