@@ -1,8 +1,8 @@
 kind: Rules
 metadata:
-  namespace: xl-bank-13-3
+  namespace: xl-bank-13-161
 spec:
-  - name: "xl-bank-labels-13-3"
+  - name: "xl-bank-labels-13-161"
     condition:
       deployedType: yak.StitchFileResource
     processor:
