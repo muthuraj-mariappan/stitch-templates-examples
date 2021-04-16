@@ -1,0 +1,19 @@
+kind: Rules
+metadata:
+  namespace: k8s-freemarker-validation-test-3
+spec:
+  - name: "k8s.AddFreemarkerLastLabel-validation-test-3"
+    condition:
+      deployedType: k8s.Resources
+      expression: "#ctx.currentDeployedApplication != null && #ctx.currentDeployedApplication.environment.name == 'kubernetes-env'"
+    processor:
+      - type: patch-fff
+        description: "Adding last label to kubernetes spec by using patch processor with jsonpatch merge type"
+        phase: PATCH
+        merge:
+          type: overlay
+        parameters:
+          patch:
+            - op: replace
+              path: "/metadata/labels/overridenLabel"
+              value: "OVERRIDEN-BY-PATCH-validation-test"
