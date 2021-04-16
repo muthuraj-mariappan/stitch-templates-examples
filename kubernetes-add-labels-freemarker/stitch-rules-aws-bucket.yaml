@@ -6,7 +6,7 @@ spec:
     condition:
       deployedType: aws.cloudformation.DeployedTemplate
     processor:
-      - type: patch-aas
+      - type: patch--da
         description: "Adding last label to kubernetes spec by using patch processor with jsonpatch merge type"
         phase: PATCH
         merge:
