@@ -15,6 +15,6 @@ spec:
           type: overlay
         parameters:
           patch:
-            - op: replace
-              path: "/metadata/labels/overridenLabel"
+            - op: add
+              path: "/metadata/labels/overridenLabel-no-weight"
               value: "OVERRIDEN-BY-PATCH-validation-test-no-weight"
