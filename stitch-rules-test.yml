@@ -1,0 +1,19 @@
+kind: Rules
+metadata:
+  namespace: k8s-freemarker
+spec:
+  - name: "k8s.AddFreemarkerLastLabel"
+    condition:
+      deployedType:
+      expression: "#ctx.currentDeployedApplication != null && #ctx.currentDeployedApplication.environment.name == 'kubernetes-prod-env'"
+    processor:
+      - type: patch
+        description: "Adding last label to kubernetes spec by using patch processor with jsonpatch merge type"
+        phase: PATCH
+        merge:
+          type: overlay
+        parameters:
+          patch:
+            - op: replace
+              path: "/metadata/labels/overridenLabel"
+              value: "overriden-labelfrom-rule"
